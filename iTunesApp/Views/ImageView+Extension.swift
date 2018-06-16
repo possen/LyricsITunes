@@ -11,6 +11,7 @@ import UIKit
 // threadsafe updates to cache structure and does purging in the utilty QOS.
 // probably better to purge based upon how big the latest request is, and
 // purge as many items as it takes to open up the cache to allocate it.
+// might not use this in a real app, NSCache might be better.
 
 
 class ImageCache {

@@ -70,10 +70,10 @@ class BaseViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "collection" {
-            collectionController = segue.destination as! CollectionViewController
+            collectionController = segue.destination as? CollectionViewController
             collectionController.modelStore = modelStore
         } else if segue.identifier == "detail" {
-            detailController = segue.destination as! DetailViewController
+            detailController = segue.destination as? DetailViewController
             if let results = modelStore.results?.results, results.count > 0 {
                 detailController.model = results[0]
             }
