@@ -31,10 +31,12 @@ class CollectionViewController: UICollectionViewController {
         }
         
         dataChangedObserverToken = modelStore.observe(\ITunesStore.updated) { (object, change) in
-            if let results = object.results {
-                self.cellAdaptorSection?.items = results.results
+            DispatchQueue.main.async {
+                if let results = object.results {
+                    self.cellAdaptorSection?.items = results.results
+                }
+                self.cellCollectionViewAdaptor?.update()
             }
-            self.cellCollectionViewAdaptor?.update()
         }
     }
 
