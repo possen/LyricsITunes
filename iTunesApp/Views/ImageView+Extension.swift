@@ -65,8 +65,10 @@ extension UIImageView {
         tag = index
         UIImageView.loadImageAtURLCache(urlOrig, index: index) { (image, url, index) in
             if self.tag == index {
-                self.image = image
-                self.setNeedsLayout()
+                DispatchQueue.main.async {
+                    self.image = image
+                    self.setNeedsLayout()
+                }
            }
         }
     }
