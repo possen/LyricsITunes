@@ -16,24 +16,15 @@ class DetailViewController: UIViewController {
     var model: ITunesModel.Result?
     var query = LyricsQuery()
     let store = LyricsStore()
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        lyrics.centerXAnchor.constraint(equalTo: scrollView.contentLayoutGuide.centerXAnchor)
-        lyrics.centerYAnchor.constraint(equalTo: scrollView.contentLayoutGuide.centerYAnchor)
-    }
-    
+        
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         guard let model = model else {
             return
         }
-        
         artist.text = model.artistName ?? "No artist"
         song.text = model.trackName ?? "No song name"
         album.text = model.collectionName ?? "No album name"
-        
         query.query(query: model.artistName ?? "", song: model.trackName ?? "").send { result in
             switch result {
             case .success(let data):
@@ -47,7 +38,6 @@ class DetailViewController: UIViewController {
     
     func process(_ data: Data) {
         let result = store.process(data)
-        
         DispatchQueue.main.async {
             switch result {
             case .success(let model):
@@ -56,7 +46,6 @@ class DetailViewController: UIViewController {
                 self.lyrics.adjustsFontSizeToFitWidth = true
                 self.lyrics.minimumScaleFactor = 4
                 self.lyrics.text = model.lyrics
-                
             case .error(let error):
                 print(error)
                 ErrorAlertController.displayError(error, sourceView: self.scrollView!, presentingController: self)

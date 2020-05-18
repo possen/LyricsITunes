@@ -22,48 +22,43 @@ class BaseViewController: UIViewController {
         
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
         navigationItem.largeTitleDisplayMode = .never
-        
         searchAdaptor = SearchAdaptor(searchView: searchController.searchBar, parentView: view) {
             self.performQuery(query: self.searchController.searchBar.text ?? "")
         }
-        
         performQuery(query: "Hello")
     }
-    
-    fileprivate func process(_ data: (Data)) {
-        DispatchQueue.global(qos: .userInitiated).async {
-            self.processInBackground(data)
-        }
-    }
-    
+        
     func performQuery(query: String) {
-        return self.query.query(query: query, limit:50).send { (result) in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let data):
-                    self.process(data)
-                case .error(let error):
-                    print(error)
-                    ErrorAlertController.displayError(error, sourceView: self.view, presentingController: self)
+        DispatchQueue.global().async {
+            return self.query.query(query: query, limit:50).send { result in
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success(let data):
+                        self.process(data)
+                    case .error(let error):
+                        print(error)
+                        ErrorAlertController.displayError(error, sourceView: self.view, presentingController: self)
+                    }
                 }
             }
         }
     }
     
-    fileprivate func processInBackground(_ data: (Data)) {
-        let result = modelStore.process(data)
-        DispatchQueue.main.async {
-            switch result {
-            case .success(let data):
-                guard data.results.count >= 1 else {
-                    return
+    fileprivate func process(_ data: (Data)) {
+        DispatchQueue.global(qos: .userInitiated).async {
+            let result = self.modelStore.process(data)
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let data):
+                    guard data.results.count >= 1 else {
+                        return
+                    }
+                case .error(let error):
+                    ErrorAlertController.displayError(error, sourceView: self.view, presentingController: self)
                 }
-            case .error(let error):
-                ErrorAlertController.displayError(error, sourceView: self.view, presentingController: self)
             }
         }
     }

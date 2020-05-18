@@ -23,10 +23,11 @@ class CollectionViewAdaptorSection<Cell, Model>: CollectionSectionAdaptor {
     internal var items: [Model]
     internal var cellSize: CGSize
     
-    init(cellReuseIdentifier: String,
-         cellSize: CGSize,
-         items: [Model],
-         configure: @escaping ( Cell, Model, Int ) -> Void)
+    init(
+        cellReuseIdentifier: String,
+        cellSize: CGSize,
+        items: [Model],
+        configure: @escaping ( Cell, Model, Int ) -> Void)
     {
         self.cellReuseIdentifier = cellReuseIdentifier
         self.items = items
@@ -52,9 +53,10 @@ class CollectionViewAdaptor: NSObject,
     private let didChangeHandler: () -> Void
     public var sections : [CollectionSectionAdaptor]
     
-    init(collectionView: UICollectionView,
-         sections: [CollectionSectionAdaptor],
-         didChangeHandler: @escaping () -> Void)
+    init(
+        collectionView: UICollectionView,
+        sections: [CollectionSectionAdaptor],
+        didChangeHandler: @escaping () -> Void)
     {
         self.collectionView = collectionView
         self.didChangeHandler = didChangeHandler
@@ -100,6 +102,7 @@ extension CollectionViewAdaptor: UICollectionViewDelegateFlowLayout {
         return sections[indexPath.section].cellSize
     }
 }
+
 extension CollectionViewAdaptor: UICollectionViewDelegate {
     
 }

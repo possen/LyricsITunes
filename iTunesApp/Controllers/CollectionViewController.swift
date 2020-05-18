@@ -19,14 +19,15 @@ class CollectionViewController: UICollectionViewController {
         cellAdaptorSection = CollectionViewAdaptorSection<CollectionCell, ITunesModel.Result> (
             cellReuseIdentifier: "CollectionCell",
             cellSize: CGSize(width: frame!.width/3, height: frame!.width/3),
-            items: [])
-        { cell, model, index in
+            items: []
+        ) { cell, model, index in
             cell.viewData = CollectionCell.ViewData(model: model, index: index)
         }
         
         cellCollectionViewAdaptor = CollectionViewAdaptor (
             collectionView: collectionView!,
-            sections: [cellAdaptorSection]) { [unowned self] in
+            sections: [cellAdaptorSection]
+        ) { [unowned self] in
                 self.collectionView?.reloadData()
         }
         
